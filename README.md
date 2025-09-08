@@ -6,6 +6,10 @@ WP-Lens is a beautiful, fast, and comprehensive web application for analyzing WP
 
 ![WP-Lens Demo](https://img.shields.io/badge/Status-Active-brightgreen) ![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![License](https://img.shields.io/badge/License-MIT-blue)
 
+## Access the Website
+
+🌐 **Live Website:** https://wplens.appwrite.network/
+
 ## ✨ Features
 
 - 🎨 **Beautiful Gradient UI** - Stunning visual design with smooth animations
