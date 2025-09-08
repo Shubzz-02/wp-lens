@@ -1,0 +1,85 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["standard", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error",
+    "no-var": "error",
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "never"],
+    "comma-dangle": ["error", "never"],
+    "eol-last": ["error", "always"],
+    "no-trailing-spaces": "error",
+    "space-before-function-paren": ["error", "always"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "space-infix-ops": "error",
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "curly": ["error", "all"],
+    "dot-notation": "error",
+    "eqeqeq": ["error", "always"],
+    "no-alert": "error",
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-return-assign": "error",
+    "no-script-url": "error",
+    "no-self-compare": "error",
+    "no-throw-literal": "error",
+    "no-useless-concat": "error",
+    "radix": "error",
+    "yoda": "error"
+  },
+  "globals": {
+    "reportData": "writable",
+    "uploadSection": "writable",
+    "reportContent": "writable",
+    "uploadArea": "writable",
+    "fileInput": "writable",
+    "Chart": "readonly"
+  },
+  "overrides": [
+    {
+      "files": ["public/script.js"],
+      "env": {
+        "browser": true,
+        "node": false
+      },
+      "globals": {
+        "document": "readonly",
+        "window": "readonly",
+        "console": "readonly",
+        "setTimeout": "readonly",
+        "FileReader": "readonly",
+        "FormData": "readonly",
+        "fetch": "readonly",
+        "event": "readonly"
+      }
+    },
+    {
+      "files": ["server.js"],
+      "env": {
+        "node": true,
+        "browser": false
+      },
+      "globals": {
+        "process": "readonly",
+        "__dirname": "readonly",
+        "require": "readonly",
+        "module": "readonly",
+        "exports": "readonly"
+      }
+    }
+  ]
+}

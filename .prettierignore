@@ -1,0 +1,32 @@
+# Prettier ignore file
+# Ignore build outputs
+dist/
+build/
+public/styles.css
+
+# Ignore node_modules
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore environment files
+.env*
+
+# Ignore compressed files
+*.tar.gz
+*.zip
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore legacy web folder
+web/
+
+# Ignore sample data
+file/*.json
