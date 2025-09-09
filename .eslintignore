@@ -52,3 +52,5 @@ web/
 
 # Sample data files
 file/*.json
+generate-images.js
+icon-generator.html

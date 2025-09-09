@@ -3,154 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WpLens - WordPress Security Analysis</title>
+    <title>WP-Lens - WordPress Security Scanner Report Viewer</title>
+    <meta name="description" content="WP-Lens is a modern, fast, and beautiful web app for viewing and analyzing WPScan security reports. Instantly visualize WordPress vulnerabilities, plugin and theme issues, and more.">
+    <meta name="keywords" content="WordPress security, WPScan, vulnerability scanner, security report, plugin vulnerabilities, theme vulnerabilities, WordPress analysis, WP-Lens, security tool, WordPress scanner, JSON report viewer">
+    <meta name="author" content="Shubzz-02">
+    <link rel="canonical" href="https://wplens.appwrite.network/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wplens.appwrite.network/">
+    <meta property="og:title" content="WP-Lens - WordPress Security Scanner Report Viewer">
+    <meta property="og:description" content="Analyze WPScan security reports with beautiful, interactive visualizations. Instantly see vulnerabilities in your WordPress site.">
+    <meta property="og:image" content="/og-image.png">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://wplens.appwrite.network/">
+    <meta name="twitter:title" content="WP-Lens - WordPress Security Scanner Report Viewer">
+    <meta name="twitter:description" content="Analyze WPScan security reports with beautiful, interactive visualizations. Instantly see vulnerabilities in your WordPress site.">
+    <meta name="twitter:image" content="/og-image.png">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "WP-Lens",
+      "url": "https://wplens.appwrite.network/",
+      "description": "WP-Lens is a modern, fast, and beautiful web app for viewing and analyzing WPScan security reports. Instantly visualize WordPress vulnerabilities, plugin and theme issues, and more.",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "screenshot": "/og-image.png"
+    }
+    </script>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-search-plus"></i> WpLens</h1>
-                <p>Focus on WordPress Security with Crystal Clear Analysis</p>
-            </div>
-        </header>
-
-        <!-- Upload Section -->
-        <div class="upload-section" id="uploadSection">
-            <div class="upload-container">
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Import WPScan Report</h3>
-                    <p>Drag & drop your wpscan-report.json file here or click to browse</p>
-                    <input type="file" id="fileInput" accept=".json" hidden>
-                    <button class="upload-btn" onclick="triggerFileInput()">
-                        <i class="fas fa-folder-open"></i> Choose File
-                    </button>
-                </div>
-            </div>
+<div class="container">
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-search-plus"></i> WpLens</h1>
+            <p>Focus on WordPress Security with Crystal Clear Analysis</p>
         </div>
+    </header>
 
-        <!-- Report Content -->
-        <div class="report-content" id="reportContent" style="display: none;">
-            <div class="report-header">
-                <div class="scan-info">
-                    <h2 id="targetUrl"></h2>
-                    <div class="scan-details">
-                        <span class="detail-item">
-                            <i class="fas fa-calendar"></i>
-                            <span id="scanDate"></span>
-                        </span>
-                        <span class="detail-item">
-                            <i class="fas fa-server"></i>
-                            <span id="targetIp"></span>
-                        </span>
-                        <span class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span id="scanDuration"></span>
-                        </span>
-                    </div>
-                </div>
-                <button class="new-scan-btn" onclick="resetViewer()">
-                    <i class="fas fa-plus"></i> New Scan
+    <!-- Upload Section -->
+    <div class="upload-section" id="uploadSection">
+        <div class="upload-container">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Import WPScan Report</h3>
+                <p>Drag & drop your wpscan-report.json file here or click to browse</p>
+                <input type="file" id="fileInput" accept=".json" hidden>
+                <button class="upload-btn" onclick="triggerFileInput()">
+                    <i class="fas fa-folder-open"></i> Choose File
                 </button>
-            </div>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="showTab('overview')">
-                    <i class="fas fa-chart-pie"></i> Overview
-                </button>
-                <button class="tab-button" onclick="showTab('wordpress')">
-                    <i class="fab fa-wordpress"></i> WordPress
-                </button>
-                <button class="tab-button" onclick="showTab('plugins')">
-                    <i class="fas fa-puzzle-piece"></i> Plugins
-                </button>
-                <button class="tab-button" onclick="showTab('themes')">
-                    <i class="fas fa-paint-brush"></i> Themes
-                </button>
-                <button class="tab-button" onclick="showTab('vulnerabilities')">
-                    <i class="fas fa-exclamation-triangle"></i> Vulnerabilities
-                </button>
-                <button class="tab-button" onclick="showTab('users')">
-                    <i class="fas fa-users"></i> Users
-                </button>
-                <button class="tab-button" onclick="showTab('findings')">
-                    <i class="fas fa-search"></i> Findings
-                </button>
-            </div>
-
-            <div class="tab-content">
-                <div id="overview" class="tab-pane active">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon vulnerabilities">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="vulnCount">0</h3>
-                                <p>Vulnerabilities</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon plugins">
-                                <i class="fas fa-puzzle-piece"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="pluginCount">0</h3>
-                                <p>Plugins</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon themes">
-                                <i class="fas fa-paint-brush"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="themeCount">0</h3>
-                                <p>Themes</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon users">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="userCount">0</h3>
-                                <p>Users</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overview-content" id="overviewContent"></div>
-                </div>
-
-                <div id="wordpress" class="tab-pane">
-                    <div class="section-content" id="wordpressContent"></div>
-                </div>
-
-                <div id="plugins" class="tab-pane">
-                    <div class="section-content" id="pluginsContent"></div>
-                </div>
-
-                <div id="themes" class="tab-pane">
-                    <div class="section-content" id="themesContent"></div>
-                </div>
-
-                <div id="vulnerabilities" class="tab-pane">
-                    <div class="section-content" id="vulnerabilitiesContent"></div>
-                </div>
-
-                <div id="users" class="tab-pane">
-                    <div class="section-content" id="usersContent"></div>
-                </div>
-
-                <div id="findings" class="tab-pane">
-                    <div class="section-content" id="findingsContent"></div>
-                </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Report Content -->
+    <div class="report-content" id="reportContent" style="display: none;">
+        <div class="report-header">
+            <div class="scan-info">
+                <h2 id="targetUrl"></h2>
+                <div class="scan-details">
+                        <span class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="scanDate"></span>
+                        </span>
+                    <span class="detail-item">
+                            <i class="fas fa-server"></i>
+                            <span id="targetIp"></span>
+                        </span>
+                    <span class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="scanDuration"></span>
+                        </span>
+                </div>
+            </div>
+            <button class="new-scan-btn" onclick="resetViewer()">
+                <i class="fas fa-plus"></i> New Scan
+            </button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('overview')">
+                <i class="fas fa-chart-pie"></i> Overview
+            </button>
+            <button class="tab-button" onclick="showTab('wordpress')">
+                <i class="fab fa-wordpress"></i> WordPress
+            </button>
+            <button class="tab-button" onclick="showTab('plugins')">
+                <i class="fas fa-puzzle-piece"></i> Plugins
+            </button>
+            <button class="tab-button" onclick="showTab('themes')">
+                <i class="fas fa-paint-brush"></i> Themes
+            </button>
+            <button class="tab-button" onclick="showTab('vulnerabilities')">
+                <i class="fas fa-exclamation-triangle"></i> Vulnerabilities
+            </button>
+            <button class="tab-button" onclick="showTab('users')">
+                <i class="fas fa-users"></i> Users
+            </button>
+            <button class="tab-button" onclick="showTab('findings')">
+                <i class="fas fa-search"></i> Findings
+            </button>
+        </div>
+
+        <div class="tab-content">
+            <div id="overview" class="tab-pane active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon vulnerabilities">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="vulnCount">0</h3>
+                            <p>Vulnerabilities</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon plugins">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pluginCount">0</h3>
+                            <p>Plugins</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon themes">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="themeCount">0</h3>
+                            <p>Themes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="userCount">0</h3>
+                            <p>Users</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-content" id="overviewContent"></div>
+            </div>
+
+            <div id="wordpress" class="tab-pane">
+                <div class="section-content" id="wordpressContent"></div>
+            </div>
+
+            <div id="plugins" class="tab-pane">
+                <div class="section-content" id="pluginsContent"></div>
+            </div>
+
+            <div id="themes" class="tab-pane">
+                <div class="section-content" id="themesContent"></div>
+            </div>
+
+            <div id="vulnerabilities" class="tab-pane">
+                <div class="section-content" id="vulnerabilitiesContent"></div>
+            </div>
+
+            <div id="users" class="tab-pane">
+                <div class="section-content" id="usersContent"></div>
+            </div>
+
+            <div id="findings" class="tab-pane">
+                <div class="section-content" id="findingsContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
